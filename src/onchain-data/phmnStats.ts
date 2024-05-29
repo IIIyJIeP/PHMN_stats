@@ -407,6 +407,19 @@ export async function getPhmnStats() {
         ]
     })
 
+
+    phmnStatsPoint.fields.push(
+        {
+            name: 'total_liquidity_osmo_ibcx',
+            value: 0
+        },
+        {
+            name: 'phmn_in_pool_osmo_ibcx',
+            value: 0
+        }
+
+    )
+
     return { 
         phmnStatsPoint: phmnStatsPoint, 
         phmnBalancesPoints: phmnBalancesPoints,
