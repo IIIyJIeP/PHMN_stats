@@ -1,13 +1,19 @@
-import 'dotenv/config'
+import { writeInfluxDbPoints } from "./db/ifluxdb"
+import { getPhmnStats } from "./onchain-data/phmnStats"
 
-const lcdEndpoint = process.env.LCD_ENDPOINT_OSMO || 'https://lcd.osmosis.zone'
 
 export async function app() {
     await update()
     async function update() {
         try {
-            console.log(new Date().toLocaleString('ru'), 'Hello!')
-
+            const phmnStats = await getPhmnStats()
+            await writeInfluxDbPoints([phmnStats.phmnStatsPoint], "phmnStats")
+            await writeInfluxDbPoints(phmnStats.subDaoTreasurys, "phmnStats")
+            await writeInfluxDbPoints(phmnStats.phmnBalancesPoints, "phmnAddresses")
+            await writeInfluxDbPoints(phmnStats.dasMembersPoints, "phmnAddresses")
+            await writeInfluxDbPoints(phmnStats.dasUnbondings, "phmnAddresses")
+            console.log(new Date().toLocaleString('ru'), 'Phmn Stats updated')
+            
             setTimeout(update, 60*1000)
         } catch (err) {
             setTimeout(update, 5*1000)
