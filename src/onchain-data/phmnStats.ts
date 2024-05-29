@@ -406,8 +406,32 @@ export async function getPhmnStats() {
             }
         ]
     })
-
-
+    for (let subDaoAddress of subdaoTreasuryAddresses) {
+        const subDao =  subDaoTreasurys.find((element) => 
+            element.tags[0].value === subDaoAddress.subdaoTag
+        )
+        if (!subDao) {
+            subDaoTreasurys.push({
+                measurement: 'subDaoTreasurys',
+                time: date,
+                tags: [{
+                    name: 'subDaoTag',
+                    value: subDaoAddress.subdaoTag
+                }],
+                fields: [
+                    {
+                        name: 'phmn',
+                        value: 0
+                    },
+                    {
+                        name: 'usd',
+                        value: 0
+                    }
+                ]
+            })
+        }
+    }  
+    
     phmnStatsPoint.fields.push(
         {
             name: 'total_liquidity_osmo_ibcx',
