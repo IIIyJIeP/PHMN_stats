@@ -99,6 +99,10 @@
         {
             "subdaoTag": "MetarchySubDAO",
             "treasuryAddress": "juno1an06lq90x3fkghls7rqeh0p3300dq75ahrcgm5zf7s0u6wd4lx5szkj2j7"
+        },
+        {
+            "subdaoTag": "UaCommunity",
+            "treasuryAddress": "juno10p866hul4r7jzp894lcxzjg74zk4g484m8z4y82ha3z44ccqymkqdvaqvh"
         }
     ]
 
