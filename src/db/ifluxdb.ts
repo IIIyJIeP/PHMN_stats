@@ -13,10 +13,10 @@ const org = process.env.INFLUXDB_ORG
 if (!process.env.PHMN_STATS_BUCKET) throw new Error('"PHMN_STATS_BUCKET" env var is required!')
 if (!process.env.PHMN_ADDRESSES_BUCKET) throw new Error('"PHMN_ADDRESSES_BUCKET" env var is required!')
 const BUCKETS = {
-    phmnStats: process.env.PHMN_STATS_BUCKET,
-    phmnAddresses: process.env.PHMN_ADDRESSES_BUCKET
+    stats: process.env.PHMN_STATS_BUCKET,
+    addresses: process.env.PHMN_ADDRESSES_BUCKET
 }
-type Bucket = 'phmnStats' | 'phmnAddresses'
+type Bucket = 'stats' | 'addresses'
 
 const client = new InfluxDB({url: ifluxDbUrl, token: ifluxDBToken})
 
