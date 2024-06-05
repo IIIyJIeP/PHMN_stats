@@ -31,7 +31,15 @@ type Unbonding = {
     releaseAt: Date
 }
 
-export async function getPhmnStats() {
+export type PhmnStats = { 
+    phmnStatsPoint: WritePoint, 
+    phmnBalancesPoints: WritePoint[],
+    dasMembersPoints: WritePoint[],
+    dasUnbondings: WritePoint[],
+    subDaoTreasurys: WritePoint[]
+}
+
+export async function getPhmnStats() : Promise<PhmnStats>  {
     const [
         phmnContractInfo, dasContractInfo, phmnPoolsInfoOsmosis, currentPrices
     ] = await Promise.all([
@@ -230,6 +238,10 @@ export async function getPhmnStats() {
         {
             name: 'market_cap',
             value: +(1.0 * phmnContractInfo.currentSupply * phmn_price_avg / 1e6).toFixed(2)
+        },
+        {
+            name: 'phmnInPools',
+            value: (osmosisPoolsPhmnAmount + phmnContractInfo.wyndDexPhmnPool + phmnContractInfo.junoswapPhmnPool) / 1e6
         }
     )
     for (let pool of phmnPoolsInfoOsmosis) {

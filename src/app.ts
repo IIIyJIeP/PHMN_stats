@@ -1,7 +1,7 @@
 import { writeInfluxDbPoints } from "./db/ifluxdb"
+import { clearGSheets, updateGSheets } from "./g-sheets/gheet"
 import { getPhmnStats } from "./onchain-data/phmnStats"
 import { getRespStats } from "./onchain-data/respStats"
-
 
 export async function app() {
     await update()
@@ -28,11 +28,20 @@ export async function app() {
             await writeInfluxDbPoints(respStats.respBalancesPoints, "addresses")
 
             console.log(new Date().toLocaleString('ru'), 'Stats updated')
+
+            try {
+                await clearGSheets()
+                await updateGSheets(phmnStats)
+                
+                console.log(new Date().toLocaleString('ru'), 'Google Sheets updated')
+            } catch (err) {
+                console.error(new Date().toLocaleString('ru'), err)
+            }
             
             setTimeout(update, 60*1000)
         } catch (err) {
             setTimeout(update, 5*1000)
-            console.error(err)
+            console.error(new Date().toLocaleString('ru'), err)
         }
     }
 }
