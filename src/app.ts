@@ -1,9 +1,14 @@
 import { writeInfluxDbPoints } from "./db/ifluxdb"
+import { setLastPhmnStats } from "./db/lastUpdate"
+import { updateDBs } from "./db/sqlite"
 import { clearGSheets, updateGSheets } from "./g-sheets/gheet"
 import { getPhmnStats } from "./onchain-data/phmnStats"
 import { getRespStats } from "./onchain-data/respStats"
+import { TelegramBot } from "./telegram/telegram"
 
 export async function app() {
+    updateDBs()
+    TelegramBot.run()
     await update()
     async function update() {
         try {
@@ -16,6 +21,7 @@ export async function app() {
             ]) 
             
             // PHMN stats
+            setLastPhmnStats(phmnStats)
             await writeInfluxDbPoints([phmnStats.phmnStatsPoint], "stats")
             await writeInfluxDbPoints(phmnStats.subDaoTreasurys, "stats")
             await writeInfluxDbPoints(phmnStats.phmnBalancesPoints, "addresses")

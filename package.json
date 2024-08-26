@@ -18,7 +18,10 @@
     "dotenv": "^16.4.5",
     "googleapis": "^139.0.0",
     "juno-network": "^0.18.1",
-    "osmojs": "^16.14.0"
+    "osmojs": "^16.14.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
+    "telegraf": "^4.16.3"
   },
   "devDependencies": {
     "@types/node": "^20.12.12",
