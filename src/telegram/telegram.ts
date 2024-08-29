@@ -86,7 +86,16 @@ export class TelegramBot {
             const msgs = await getChatMsgs(ctx.chat.id)
             await deleteChatMsgs(ctx.chat.id)
             await addMsg({msgId: ctx.message.message_id, chatId: ctx.chat.id})
-            const msg = await ctx.reply(getPhmnPriceMsg(ctx.message.date))
+            
+            const msg = await ctx.reply(
+                getPhmnPriceMsg(ctx.message.date), 
+                ctx.message.reply_to_message ? {
+                    reply_parameters: {
+                        message_id: ctx.message.reply_to_message.message_id
+                    }
+                } : undefined
+            )
+            
             await addMsg({msgId: msg.message_id, chatId: msg.chat.id})
             await ctx.deleteMessages(msgs)
         })
@@ -96,7 +105,14 @@ export class TelegramBot {
             await addMsg({msgId: ctx.message.message_id, chatId: ctx.chat.id})
             
             const {msg:txtMsg, links} = getPhmnInfoMsg()
-            const msg = await ctx.reply(txtMsg, links)
+            
+            const msg = await ctx.reply(txtMsg, ctx.message.reply_to_message ? {
+                reply_parameters: {
+                    message_id: ctx.message.reply_to_message.message_id,
+
+                },
+                reply_markup: links.reply_markup
+            } : links)
             
             await addMsg({msgId: msg.message_id, chatId: msg.chat.id})
             await ctx.deleteMessages(msgs)
