@@ -61,6 +61,20 @@ const getPhmnInfoMsg = () => {
     return {msg, links}
 }
 
+const getWeirdPriceMsg = (date: number) => {
+    const prices = getLastPhmnPrices()
+    
+    const weirdPrice = prices.phmnPrice && prices.weirdPerPhmn ? (prices.phmnPrice/prices.weirdPerPhmn).toFixed(6) : 'n/a'
+
+    let msg = fmt``
+    msg = fmt(msg, bold`💲WEIRD price:  $${weirdPrice}\n`)
+    msg = fmt(msg, italic`updated ${prices.lastUpdateTime ? date - Math.floor(prices.lastUpdateTime?.valueOf()/1000) : 'n/a'} sec ago\n\n`)
+    msg = fmt(msg, `1 PHMN = ${prices.weirdPerPhmn?.toFixed(0) || 'n/a'} Weird\n\n`)
+    msg = fmt(msg, link('Buy WEIRD on Osmosis', 'https://app.osmosis.zone/?utm_source=osmosis_landing_page&utm_campaign=swap&from=USDC&to=WEIRD&sellOpen=false&buyOpen=false'))
+    
+    return msg
+}
+
 export class TelegramBot {
     static isRuning = false
     
@@ -117,7 +131,23 @@ export class TelegramBot {
             await addMsg({msgId: msg.message_id, chatId: msg.chat.id})
             await ctx.deleteMessages(msgs)
         })
-
+        .command('weird_price', async ctx => {
+            const msgs = await getChatMsgs(ctx.chat.id)
+            await deleteChatMsgs(ctx.chat.id)
+            await addMsg({msgId: ctx.message.message_id, chatId: ctx.chat.id})
+            
+            const msg = await ctx.reply(
+                getWeirdPriceMsg(ctx.message.date), 
+                ctx.message.reply_to_message ? {
+                    reply_parameters: {
+                        message_id: ctx.message.reply_to_message.message_id
+                    }
+                } : undefined
+            )
+            
+            await addMsg({msgId: msg.message_id, chatId: msg.chat.id})
+            await ctx.deleteMessages(msgs)
+        })
        
     static run = () => {
         if(!this.isRuning) {
