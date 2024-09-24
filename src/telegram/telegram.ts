@@ -143,7 +143,7 @@ export class TelegramBot {
                         message_id: ctx.message.reply_to_message.message_id,
                     },
                     link_preview_options: {is_disabled: true}
-                } : undefined
+                } : {link_preview_options: {is_disabled: true}}
             )
             
             await addMsg({msgId: msg.message_id, chatId: msg.chat.id})
