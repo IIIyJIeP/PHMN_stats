@@ -140,8 +140,9 @@ export class TelegramBot {
                 getWeirdPriceMsg(ctx.message.date), 
                 ctx.message.reply_to_message ? {
                     reply_parameters: {
-                        message_id: ctx.message.reply_to_message.message_id
-                    }
+                        message_id: ctx.message.reply_to_message.message_id,
+                    },
+                    link_preview_options: {is_disabled: true}
                 } : undefined
             )
             
