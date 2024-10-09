@@ -23,5 +23,6 @@ export const getLastPhmnPrices = () => {
         osmoPerPhmn: getPhmnStatByField('osmo_per_phmn_osmo'),
         atomPerPhmn: getPhmnStatByField('atom_per_phmn_osmo'),
         weirdPerPhmn: getPhmnStatByField('WEIRD_per_phmn_osmosis_pool_1776'),
+        sinPerWeird: getPhmnStatByField('SIN_per_WEIRD_osmosis_pool_2210'),
     }
 }

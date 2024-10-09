@@ -69,7 +69,10 @@ const getWeirdPriceMsg = (date: number) => {
     let msg = fmt``
     msg = fmt(msg, bold`💲WEIRD price:  $${weirdPrice}\n`)
     msg = fmt(msg, italic`updated ${prices.lastUpdateTime ? date - Math.floor(prices.lastUpdateTime?.valueOf()/1000) : 'n/a'} sec ago\n\n`)
-    msg = fmt(msg, `1 PHMN = ${prices.weirdPerPhmn?.toFixed(0) || 'n/a'} Weird\n\n`)
+    
+    msg = fmt(msg, `1 PHMN = ${prices.weirdPerPhmn?.toFixed(0) || 'n/a'} WEIRD\n`)
+    msg = fmt(msg, `1 WEIRD = ${prices.sinPerWeird?.toFixed(2) || 'n/a'} SIN\n\n`)
+    
     msg = fmt(msg, link('Buy WEIRD on Osmosis', 'https://app.osmosis.zone/?utm_source=osmosis_landing_page&utm_campaign=swap&from=USDC&to=WEIRD&sellOpen=false&buyOpen=false'))
     
     return msg
