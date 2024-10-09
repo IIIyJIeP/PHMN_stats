@@ -1,7 +1,7 @@
 import { hexToText } from "../helpers";
 import { getContractState } from "./juno/junoRequests";
 import { requestPoolInfoOsmosis } from "./osmosis/osmosisRequests";
-import { poolsPHMNosmosis, phmnDenomOsmosis } from './osmosis/phmnConfig.json'
+import { poolsPHMNosmosis, phmnDenomOsmosis, poolsWEIRDosmosis, weirdDenomOsmosis } from './osmosis/phmnConfig.json'
 import { contractsAddresses, subdaoTreasuryAddresses } from './juno/phmnConfig.json'
 import { WritePoint } from "../db/ifluxdb"
 import { getCurrentPrices } from "../onchain-data/pythPrices"
@@ -41,11 +41,12 @@ export type PhmnStats = {
 
 export async function getPhmnStats() : Promise<PhmnStats>  {
     const [
-        phmnContractInfo, dasContractInfo, phmnPoolsInfoOsmosis, currentPrices
+        phmnContractInfo, dasContractInfo, phmnPoolsInfoOsmosis, weirdPoolsInfoOsmosis, currentPrices
     ] = await Promise.all([
         getPhmnContractInfo(),
         getDasContractInfo(),
         getPhmnPoolsInfoOsmosis(),
+        getWeirdPoolsInfoOsmosis(),
         getCurrentPrices()
     ])
     const date = new Date(Date.now())
@@ -213,6 +214,36 @@ export async function getPhmnStats() : Promise<PhmnStats>  {
             )
         }
     }
+
+    for (let pool of weirdPoolsInfoOsmosis) {
+        const weirdAmount = Number(pool.poolInfo.pool_assets.find((asset) => asset.token.denom === weirdDenomOsmosis
+        )?.token.amount || '0') / 1e6
+
+        const poolInfo = poolsWEIRDosmosis.find((elem) => elem.poolId === pool.poolId
+        )
+
+        const token2Amount = Number(pool.poolInfo.pool_assets.find((asset) => asset.token.denom === poolInfo?.secondTokenBaseDenom
+        )?.token.amount || '0') / poolInfo!.secondTokenMultiplier
+        if (weirdAmount === 0 || token2Amount === 0) continue
+
+        const token2PerWeird = token2Amount / weirdAmount
+
+        phmnStatsPoint.fields.push(
+            {
+                name: 'WEIRD_in_osmosis_pool_' + pool.poolId.toString(),
+                value: weirdAmount
+            },
+            {
+                name: poolInfo!.secondTokenDenom + '_in_osmosis_pool_' + pool.poolId.toString(),
+                value: token2Amount
+            },
+            {
+                name: poolInfo!.secondTokenDenom + '_per_WEIRD_osmosis_pool_' + pool.poolId.toString(),
+                value: token2PerWeird
+            }
+        )
+    }
+
     let phmn_price_avg = 0 // average price Osmosis Dex
     if (phmn_price_osmo && phmn_price_osmo_osmo) {
         phmn_price_avg = +((phmn_price_osmo + phmn_price_osmo_osmo) / 2).toFixed(2)
@@ -473,6 +504,16 @@ async function getPhmnPoolsInfoOsmosis() {
 
     return await Promise.all(promises)
 }
+
+async function getWeirdPoolsInfoOsmosis() {
+    const promises = []
+    for (let pool of poolsWEIRDosmosis) {
+        promises.push(requestPoolInfoOsmosis(pool.poolId))
+    }
+
+    return await Promise.all(promises)
+}
+
 async function getDasContractInfo() {
     const dasContarctInfo = {
         unbonding: [] as  Unbonding[],

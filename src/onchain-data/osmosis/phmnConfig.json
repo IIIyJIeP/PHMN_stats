@@ -28,6 +28,16 @@
             "secondTokenMultiplier": 1e6,
             "ownerAddress": ""
         }
+    ],
+    
+    "weirdDenomOsmosis": "ibc/38ADC6FFDDDB7D70B72AD0322CEA8844CB18FAA0A23400DBA8A99D43E18B3748",
+    "poolsWEIRDosmosis": [
+        {
+            "poolId": 2210,
+            "secondTokenDenom": "SIN",
+            "secondTokenBaseDenom": "ibc/2BF7FB3908B469FA9672767DC74AF8A18E2F47F8B623B0685DE290B828FCBD23",
+            "secondTokenMultiplier": 1e6,
+            "ownerAddress": ""
+        }
     ]
-
 }
