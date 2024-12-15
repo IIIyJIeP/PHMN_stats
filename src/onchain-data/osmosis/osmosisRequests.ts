@@ -1,4 +1,3 @@
-import 'dotenv/config'
 import { osmosis } from 'osmojs'
 import {poolsPHMNosmosis} from './phmnConfig.json'
 

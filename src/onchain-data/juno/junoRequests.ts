@@ -1,5 +1,3 @@
-import 'dotenv/config'
-
 if (!process.env.LCD_ENDPOINT_JUNO) throw new Error('"LCD_ENDPOINT_JUNO" env var is required!')
 const junoLcdEndpoint = process.env.LCD_ENDPOINT_JUNO
 

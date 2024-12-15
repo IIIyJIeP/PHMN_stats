@@ -1,23 +1,25 @@
+import 'dotenv/config'
 import { writeInfluxDbPoints } from "./db/ifluxdb"
 import { setLastPhmnStats } from "./db/lastUpdate"
 import { updateDBs } from "./db/sqlite"
 import { clearGSheets, updateGSheets } from "./g-sheets/gheet"
 import { getPhmnStats } from "./onchain-data/phmnStats"
 import { getRespStats } from "./onchain-data/respStats"
+import { getSbtStats } from "./onchain-data/sbtStats"
 import { TelegramBot } from "./telegram/telegram"
 
 export async function app() {
     updateDBs()
     TelegramBot.run()
-    await update()
-    async function update() {
+    await updateStats()
+    async function updateStats() {
         try {
             const [
                 phmnStats,
-                respStats
+                respStats,
             ] = await Promise.all([
                 getPhmnStats(),
-                getRespStats()
+                getRespStats(),
             ]) 
             
             // PHMN stats
@@ -44,9 +46,24 @@ export async function app() {
                 console.error(new Date().toLocaleString('ru'), err)
             }
             
-            setTimeout(update, 60*1000)
+            setTimeout(updateStats, 60*1000)
         } catch (err) {
-            setTimeout(update, 5*1000)
+            setTimeout(updateStats, 5*1000)
+            console.error(new Date().toLocaleString('ru'), err)
+        }
+    }
+    
+    await updateNftStats()
+    async function updateNftStats() {
+        try {
+            const sbtStats = await getSbtStats()
+            await writeInfluxDbPoints(sbtStats, "nft")
+            
+            console.log(new Date().toLocaleString('ru'), 'NFT stats updated')
+
+            setTimeout(updateNftStats, 60*1000)
+        } catch (err) {
+            setTimeout(updateNftStats, 5*1000)
             console.error(new Date().toLocaleString('ru'), err)
         }
     }

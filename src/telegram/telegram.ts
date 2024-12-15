@@ -1,4 +1,3 @@
-import 'dotenv/config'
 import { Markup, Telegraf } from 'telegraf'
 import { FmtString, bold, fmt, link, italic, code } from 'telegraf/format'
 import { getLastPhmnPrices } from '../db/lastUpdate'
