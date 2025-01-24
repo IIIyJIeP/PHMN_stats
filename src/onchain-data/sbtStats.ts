@@ -1,6 +1,9 @@
 import { denomIDs } from './omniflix/sbtConfig.json'
 import { getLcdCollectionInfo } from './omniflix/omniflixLcdRequests'
 import { WritePoint } from "../db/ifluxdb"
+import * as fs from 'fs'
+import { unparse } from 'papaparse'
+
 
 const { SBT_COLLECTION_DENOM_ID } = denomIDs
 
@@ -13,88 +16,59 @@ interface GroupedData {
     }
 }
 
-export async function getSbtStats(): Promise<WritePoint[]> {
+
+
+export async function getSbtStats() {
     try {
         const sbtInfo = await getLcdCollectionInfo(SBT_COLLECTION_DENOM_ID)
-        const date = new Date(Date.now())
-        
-        const grouped = sbtInfo.reduce((acc: GroupedData, item) => {
-            const key = `${item.epoch}-${item.type}`
-            const all = `All-${item.type}`
-            if (!acc[all]) {
-                acc[all] = {
-                    epoch: 'All',
-                    type: item.type,
-                    sbtCount: 0,
-                    owners: new Set(),
-                }
-            }
-            if (!acc[key]) {
-                acc[key] = {
-                    epoch: item.epoch,
-                    type: item.type,
-                    sbtCount: 0,
-                    owners: new Set(),
-                }
-            }
-            acc[key].sbtCount++
-            acc[key].owners.add(item.owner)
-            acc[all].sbtCount++
-            acc[all].owners.add(item.owner)
-            return acc
-        }, {} as GroupedData)
-        
-        const groupedTotal = sbtInfo.reduce((acc: GroupedData, item) => {
-            if (!acc['All']) {
-                acc['All'] = {
-                    epoch: 'All',
-                    type: 'total',
-                    sbtCount: 0,
-                    owners: new Set(),
-                }
-            }
-            if (!acc[item.epoch]) {
-                acc[item.epoch] = {
-                    epoch: item.epoch,
-                    type: 'total',
-                    sbtCount: 0,
-                    owners: new Set(),
-                }
-            }
-            acc[item.epoch].sbtCount++
-            acc[item.epoch].owners.add(item.owner)
-            acc['All'].sbtCount++
-            acc['All'].owners.add(item.owner)
-            return acc
-        }, {} as GroupedData)
 
-        return [
-            ...Object.values(grouped).map(group => ({
-                measurement: 'posthuman_sbt_by_type',
-                time: date,
-                tags: [
-                    { name: 'epoch', value: group.epoch },
-                    { name: 'type', value: group.type },
-                ],
-                fields: [
-                    { name: 'sbt_count', value: group.sbtCount },
-                    { name: 'owners_count', value: group.owners.size },
-                ],
-            })),
-            ...Object.values(groupedTotal).map(group => ({
-                measurement: 'posthuman_sbt_total',
-                time: date,
-                tags: [
-                    { name: 'epoch', value: group.epoch },
-                    { name: 'type', value: group.type },
-                ],
-                fields: [
-                    { name: 'sbt_count', value: group.sbtCount },
-                    { name: 'owners_count', value: group.owners.size },
-                ],
-            })),
-        ]
-    } catch(e) {
+        // Подготовка структуры для хранения данных
+        const types = ['common', 'bronze', 'silver', 'gold', 'platinum', 'brilliant']
+        const groupedByType: Record<string, Record<string, number>> = {}
+
+        // Инициализация структуры для каждого типа
+        types.forEach(type => {
+            groupedByType[type] = {}
+        })
+
+        // Группировка данных по `type` и `owner`
+        sbtInfo.forEach(({ owner, type }) => {
+            if (!groupedByType[type]) return
+            if (!groupedByType[type][owner]) {
+                groupedByType[type][owner] = 0
+            }
+            groupedByType[type][owner]++
+        })
+
+        // Генерация CSV-файлов для каждого типа
+        types.forEach(type => {
+            const data = Object.entries(groupedByType[type]).map(([address, number]) => ({
+                address,
+                number,
+            }))
+
+            const csvString = unparse(data)
+
+            const outputDir = './output'
+
+            // Убедимся, что папка для вывода существует
+            if (!fs.existsSync(outputDir)) {
+                fs.mkdirSync(outputDir)
+            }
+            const outputPath = `${outputDir}/${type}.csv`
+
+            // Сохранение файла
+            fs.writeFileSync(outputPath, csvString, 'utf-8')
+            console.log(`Файл ${type}.csv успешно сохранён в: ${outputPath}`)
+        })
+
+
+
+
+
+
+        return sbtInfo.length
+    } catch (e) {
         console.error(e)
         return []
     }

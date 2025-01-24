@@ -57,7 +57,10 @@ export async function getLcdCollectionInfo(denomId: string): Promise<SbtInfoResp
         omniflixLCD
     )
     
+    let count = 0
+
     const getInfo = async (paginationKey?: string) => {
+        console.log(count++)
         if (paginationKey) {
             queryUrl.searchParams.set('pagination.key', paginationKey)
         }
