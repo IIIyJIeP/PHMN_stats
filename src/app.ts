@@ -72,7 +72,7 @@ export async function app() {
     async function updateSpheresStats() {
         try {
             const spheresStats = await getSpheresStats()
-            await writeInfluxDbPoints(spheresStats, "nft")
+            await writeInfluxDbPoints(spheresStats, "stats")
             
             console.log(new Date().toLocaleString('ru'), 'Spheres stats updated')
 
