@@ -1,11 +1,25 @@
 if (!process.env.OMNIFLIX_API_URL) throw new Error('"OMNIFLIX_API_URL" env var is required!')
 const omniflixApiUrl = process.env.OMNIFLIX_API_URL
 
+type Types = "common"|"bronze"|"silver"|"gold"|"platinum"|"brilliant"
+
 export interface SbtInfoResponse {
     id: string,
     epoch: string
     owner: string,
-    type: "common"|"bronze"|"silver"|"gold"|"platinum"|"brilliant",
+    type: Types,
+}
+
+export interface SpheresInfoResponse {
+    unique_owners: number,
+    total_nfts: number,
+    total_listed_nft: number,
+    floor_price_in_usd: number
+}
+
+interface SpheresCollectionInfo {
+    success: boolean,
+    result: SpheresInfoResponse
 }
 
 interface SbtTrates {
@@ -101,4 +115,28 @@ export async function getCollectionInfo(denomId: string): Promise<SbtInfoRespons
     }
 
     return result
+}
+
+export async function getSpheresInfo(denomId: string): Promise<SpheresInfoResponse> {
+    const collectionsPath = '/collections/'+ denomId
+    const queryUrl = new URL(
+        collectionsPath,
+        omniflixApiUrl
+    )
+    
+    const spheresInfoResp = await fetch(queryUrl)
+    if (!spheresInfoResp.ok) {
+        throw new Error('spheresInfoResp: Respons not OK')
+    }
+    const spheresInfo = await spheresInfoResp.json() as SpheresCollectionInfo
+    if (!spheresInfo.success) {
+        throw new Error('spheresInfo: Respons not success')
+    }
+    
+    return {
+        total_nfts: spheresInfo.result.total_nfts,
+        unique_owners: spheresInfo.result.unique_owners,
+        total_listed_nft: spheresInfo.result.total_listed_nft,
+        floor_price_in_usd: spheresInfo.result.floor_price_in_usd
+    }
 }

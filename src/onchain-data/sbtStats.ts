@@ -1,6 +1,8 @@
 import { denomIDs } from './omniflix/sbtConfig.json'
-import { getLcdCollectionInfo } from './omniflix/omniflixLcdRequests'
+import { spheresIDs } from './omniflix/spheresConfig.json'
+import { getLcdCollectionInfo, SpheresType } from './omniflix/omniflixLcdRequests'
 import { WritePoint } from "../db/ifluxdb"
+import { getSpheresInfo } from './omniflix/omniflixApiRequests'
 
 const { SBT_COLLECTION_DENOM_ID } = denomIDs
 
@@ -94,6 +96,34 @@ export async function getSbtStats(): Promise<WritePoint[]> {
                 ],
             })),
         ]
+    } catch(e) {
+        console.error(e)
+        return []
+    }
+}
+
+export async function getSpheresStats(): Promise<WritePoint[]> {
+    try {
+        const date = new Date(Date.now())
+        const result: WritePoint[] = []
+
+        for (let type in spheresIDs) {
+            const spheresInfo = await getSpheresInfo(spheresIDs[type as SpheresType])
+            result.push({
+                measurement: 'spheres',
+                time: date,
+                tags: [
+                    { name: 'type', value: type },
+                ],
+                fields: [
+                    { name: 'total_nfts', value: spheresInfo.total_nfts },
+                    { name: 'unique_owners', value: spheresInfo.unique_owners },
+                    { name: 'total_listed_nft', value: spheresInfo.total_listed_nft },
+                    { name: 'floor_price_in_usd', value: spheresInfo.floor_price_in_usd },
+                ],
+            })
+        }
+        return result
     } catch(e) {
         console.error(e)
         return []

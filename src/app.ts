@@ -5,7 +5,7 @@ import { updateDBs } from "./db/sqlite"
 import { clearGSheets, updateGSheets } from "./g-sheets/gheet"
 import { getPhmnStats } from "./onchain-data/phmnStats"
 import { getRespStats } from "./onchain-data/respStats"
-import { getSbtStats } from "./onchain-data/sbtStats"
+import { getSbtStats, getSpheresStats } from "./onchain-data/sbtStats"
 import { TelegramBot } from "./telegram/telegram"
 
 export async function app() {
@@ -64,6 +64,21 @@ export async function app() {
             setTimeout(updateNftStats, 60*1000)
         } catch (err) {
             setTimeout(updateNftStats, 5*1000)
+            console.error(new Date().toLocaleString('ru'), err)
+        }
+    }
+
+    await updateSpheresStats()
+    async function updateSpheresStats() {
+        try {
+            const spheresStats = await getSpheresStats()
+            await writeInfluxDbPoints(spheresStats, "nft")
+            
+            console.log(new Date().toLocaleString('ru'), 'Spheres stats updated')
+
+            setTimeout(updateSpheresStats, 60*1000)
+        } catch (err) {
+            setTimeout(updateSpheresStats, 5*1000)
             console.error(new Date().toLocaleString('ru'), err)
         }
     }

@@ -1,11 +1,19 @@
 if (!process.env.OMNIFLIX_LCD) throw new Error('"OMNIFLIX_LCD" env var is required!')
 const omniflixLCD = process.env.OMNIFLIX_LCD
 
+export type SpheresType = "common"|"bronze"|"silver"|"gold"|"platinum"|"brilliant"
+
 export interface SbtInfoResponse {
     id: string,
     epoch: string
     owner: string,
-    type: "common"|"bronze"|"silver"|"gold"|"platinum"|"brilliant",
+    type: SpheresType,
+}
+
+export interface SpheresInfoResponse {
+    id: string,
+    owner: string,
+    type: SpheresType,
 }
 
 interface SbtTrates {
@@ -48,8 +56,6 @@ interface LcdCollectionInfo {
 }
 
 export async function getLcdCollectionInfo(denomId: string): Promise<SbtInfoResponse[]> {
-    const start = new Date()
-
     const result: SbtInfoResponse[] =[]
     const nftPath = `/omniflix/onft/v1beta1/collections/${denomId}`
     const queryUrl = new URL(
@@ -94,6 +100,43 @@ export async function getLcdCollectionInfo(denomId: string): Promise<SbtInfoResp
         if (sbtInfo.pagination.next_key) {
             await new Promise(resolve => setTimeout(resolve, 100))
             await getInfo(sbtInfo.pagination.next_key)
+        }
+    }
+    await getInfo()
+    return result
+}
+
+export async function getLcdSpheresInfo(denomId: string, type: SpheresType): Promise<SpheresInfoResponse[]> {
+    const result: SpheresInfoResponse[] =[]
+    const nftPath = `/omniflix/onft/v1beta1/collections/${denomId}`
+    const queryUrl = new URL(
+        nftPath,
+        omniflixLCD
+    )
+    
+    const getInfo = async (paginationKey?: string) => {
+        if (paginationKey) {
+            queryUrl.searchParams.set('pagination.key', paginationKey)
+        }
+        const spheresInfoResp = await fetch(queryUrl)
+        if (!spheresInfoResp.ok) {
+            await new Promise(resolve => setTimeout(resolve, 2*1e3))
+            await getInfo (paginationKey)
+            return
+        }
+        const spheresInfo = await spheresInfoResp.json() as LcdCollectionInfo
+        
+        const spheres: SpheresInfoResponse[] = spheresInfo.collection.onfts.map(item => {
+            return {
+                id: item.id,
+                owner: item.owner,
+                type
+            }
+        })
+        result.push(...spheres)
+        if (spheresInfo.pagination.next_key) {
+            await new Promise(resolve => setTimeout(resolve, 100))
+            await getInfo(spheresInfo.pagination.next_key)
         }
     }
     await getInfo()
