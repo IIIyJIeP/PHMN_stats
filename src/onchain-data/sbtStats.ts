@@ -120,6 +120,7 @@ export async function getSpheresStats(): Promise<WritePoint[]> {
                     { name: 'unique_owners', value: spheresInfo.unique_owners },
                     { name: 'total_listed_nft', value: spheresInfo.total_listed_nft },
                     { name: 'floor_price_in_usd', value: spheresInfo.floor_price_in_usd },
+                    { name: 'trade_volume_in_usd', value: spheresInfo.trade_volume_in_usd },
                 ],
             })
         }

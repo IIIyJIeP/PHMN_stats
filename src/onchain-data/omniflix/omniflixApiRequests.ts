@@ -14,7 +14,8 @@ export interface SpheresInfoResponse {
     unique_owners: number,
     total_nfts: number,
     total_listed_nft: number,
-    floor_price_in_usd: number
+    floor_price_in_usd: number,
+    trade_volume_in_usd: number
 }
 
 interface SpheresCollectionInfo {
@@ -137,6 +138,7 @@ export async function getSpheresInfo(denomId: string): Promise<SpheresInfoRespon
         total_nfts: spheresInfo.result.total_nfts,
         unique_owners: spheresInfo.result.unique_owners,
         total_listed_nft: spheresInfo.result.total_listed_nft,
-        floor_price_in_usd: spheresInfo.result.floor_price_in_usd
+        floor_price_in_usd: spheresInfo.result.floor_price_in_usd,
+        trade_volume_in_usd: spheresInfo.result.trade_volume_in_usd
     }
 }
