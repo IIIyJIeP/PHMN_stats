@@ -88,7 +88,7 @@ export async function app() {
     async function updateAvatarCllectionStats() {
         try {
             const avatarStats = await getAvatarCollectionStats()
-            await writeInfluxDbPoints(avatarStats, "nft")
+            await writeInfluxDbPoints(avatarStats, "stats")
             
             console.log(new Date().toLocaleString('ru'), 'Avatars stats updated')
 
