@@ -5,12 +5,13 @@ import { updateDBs } from "./db/sqlite"
 import { clearGSheets, updateGSheets } from "./g-sheets/gheet"
 import { getPhmnStats } from "./onchain-data/phmnStats"
 import { getRespStats } from "./onchain-data/respStats"
-import { getSbtStats, getSpheresStats } from "./onchain-data/sbtStats"
+import { getAvatarCollectionStats, getSbtStats, getSpheresStats } from "./onchain-data/sbtStats"
 import { TelegramBot } from "./telegram/telegram"
 
 export async function app() {
     updateDBs()
     TelegramBot.run()
+    
     await updateStats()
     async function updateStats() {
         try {
@@ -82,4 +83,20 @@ export async function app() {
             console.error(new Date().toLocaleString('ru'), err)
         }
     }
+
+    await updateAvatarCllectionStats()
+    async function updateAvatarCllectionStats() {
+        try {
+            const avatarStats = await getAvatarCollectionStats()
+            await writeInfluxDbPoints(avatarStats, "nft")
+            
+            console.log(new Date().toLocaleString('ru'), 'Avatars stats updated')
+
+            setTimeout(updateAvatarCllectionStats, 60*1000)
+        } catch (err) {
+            setTimeout(updateAvatarCllectionStats, 5*1000)
+            console.error(new Date().toLocaleString('ru'), err)
+        }
+    }
+
 }

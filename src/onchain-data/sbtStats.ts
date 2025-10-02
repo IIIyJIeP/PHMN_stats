@@ -1,16 +1,24 @@
-import { denomIDs } from './omniflix/sbtConfig.json'
+import { denomIDs } from './omniflix/nftConfig.json'
 import { spheresIDs } from './omniflix/spheresConfig.json'
-import { getLcdCollectionInfo, SpheresType } from './omniflix/omniflixLcdRequests'
+import { getAvatarsCollectionInfo, getLcdCollectionInfo, SpheresType } from './omniflix/omniflixLcdRequests'
 import { WritePoint } from "../db/ifluxdb"
 import { getSpheresInfo } from './omniflix/omniflixApiRequests'
 
-const { SBT_COLLECTION_DENOM_ID } = denomIDs
+const { SBT_COLLECTION_DENOM_ID, AVATARS_COLLECTION_DENOM_ID } = denomIDs
 
 interface GroupedData {
     [key: string]: {
         epoch: string,
         type: "common" | "bronze" | "silver" | "gold" | "platinum" | "brilliant" | "total",
         sbtCount: number,
+        owners: Set<string>,
+    }
+}
+
+interface GroupedAvatars {
+    [key: string]: {
+        type: "common" | "bronze" | "silver" | "gold" | "platinum" | "brilliant",
+        nftCount: number,
         owners: Set<string>,
     }
 }
@@ -125,6 +133,84 @@ export async function getSpheresStats(): Promise<WritePoint[]> {
             })
         }
         return result
+    } catch(e) {
+        console.error(e)
+        return []
+    }
+}
+
+export async function getAvatarCollectionStats(): Promise<WritePoint[]> {
+    try {
+        const nftInfo = await getAvatarsCollectionInfo(AVATARS_COLLECTION_DENOM_ID)
+        const collectionInfo = await getSpheresInfo(AVATARS_COLLECTION_DENOM_ID)
+        
+        const date = new Date(Date.now())
+        const cemetery = nftInfo.filter((avatar)=>avatar.owner === 'omniflix1s3achxs70ysg8pf9xqyytu0m4had60khvw2e8h')
+        const liveAvatars = nftInfo.filter((avatar)=>avatar.owner !== 'omniflix1s3achxs70ysg8pf9xqyytu0m4had60khvw2e8h')
+        
+        const groupedCemetery = cemetery.reduce((acc: GroupedAvatars, item) => {
+            const key = item.type
+            if (!acc[key]) {
+                acc[key] = {
+                    type: item.type,
+                    nftCount: 0,
+                    owners: new Set(),
+                }
+                acc[key].owners.add(item.owner)
+            }
+            acc[key].nftCount++
+            return acc
+        }, {} as GroupedAvatars)
+
+        const groupedLiveAvatars = liveAvatars.reduce((acc: GroupedAvatars, item) => {
+            const key = item.type
+            if (!acc[key]) {
+                acc[key] = {
+                    type: item.type,
+                    nftCount: 0,
+                    owners: new Set(),
+                }
+            }
+            acc[key].nftCount++
+            acc[key].owners.add(item.owner)
+            return acc
+        }, {} as GroupedAvatars)
+        
+        return [
+            ...Object.values(groupedLiveAvatars).map(group => ({
+                measurement: 'posthuman_live_avatars_by_type',
+                time: date,
+                tags: [
+                    { name: 'type', value: group.type },
+                ],
+                fields: [
+                    { name: 'nft_count', value: group.nftCount },
+                    { name: 'owners_count', value: group.owners.size },
+                ],
+            })),
+            ...Object.values(groupedCemetery).map(group => ({
+                measurement: 'posthuman_avatars_cemetery',
+                time: date,
+                tags: [
+                    { name: 'type', value: group.type },
+                ],
+                fields: [
+                    { name: 'nft_count', value: group.nftCount },
+                ],
+            })),
+            {
+                measurement: 'posthuman_avatars',
+                time: date,
+                tags: [],
+                fields: [
+                    { name: 'total_nfts', value: collectionInfo.total_nfts },
+                    { name: 'unique_owners', value: collectionInfo.unique_owners },
+                    { name: 'total_listed_nft', value: collectionInfo.total_listed_nft },
+                    { name: 'floor_price_in_usd', value: collectionInfo.floor_price_in_usd },
+                    { name: 'trade_volume_in_usd', value: collectionInfo.trade_volume_in_usd },
+                ],
+            }
+        ]
     } catch(e) {
         console.error(e)
         return []

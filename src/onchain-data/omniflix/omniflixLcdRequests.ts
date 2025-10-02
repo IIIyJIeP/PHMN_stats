@@ -10,6 +10,12 @@ export interface SbtInfoResponse {
     type: SpheresType,
 }
 
+export interface AvatarsInfoResponse {
+    id: string,
+    owner: string,
+    type: SpheresType,
+}
+
 export interface SpheresInfoResponse {
     id: string,
     owner: string,
@@ -20,6 +26,10 @@ interface SbtTrates {
     type: string,
     epoch?: string
     drop_number?: number
+}
+
+interface AvatarTrates {
+    Rarity: string,
 }
 
 interface SbtInfo {
@@ -137,6 +147,45 @@ export async function getLcdSpheresInfo(denomId: string, type: SpheresType): Pro
         if (spheresInfo.pagination.next_key) {
             await new Promise(resolve => setTimeout(resolve, 100))
             await getInfo(spheresInfo.pagination.next_key)
+        }
+    }
+    await getInfo()
+    return result
+}
+
+export async function getAvatarsCollectionInfo(denomId: string): Promise<AvatarsInfoResponse[]> {
+    const result: AvatarsInfoResponse[] =[]
+    const nftPath = `/omniflix/onft/v1beta1/collections/${denomId}`
+    const queryUrl = new URL(
+        nftPath,
+        omniflixLCD
+    )
+    
+    const getInfo = async (paginationKey?: string) => {
+        if (paginationKey) {
+            queryUrl.searchParams.set('pagination.key', paginationKey)
+        }
+        const sbtInfoResp = await fetch(queryUrl)
+        if (!sbtInfoResp.ok) {
+            await new Promise(resolve => setTimeout(resolve, 2*1e3))
+            await getInfo (paginationKey)
+            return
+        }
+        const sbtInfo = await sbtInfoResp.json() as LcdCollectionInfo
+        
+        const nfts = sbtInfo.collection.onfts.map(item => {
+            const data: AvatarTrates = JSON.parse(item.data)
+                       
+            return {
+                id: item.id,
+                owner: item.owner,
+                type: data.Rarity.toLowerCase() as "common"|"bronze"|"silver"|"gold"|"platinum"|"brilliant"
+            }
+        }).filter(i => i !== null) as AvatarsInfoResponse[]
+        result.push(...nfts)
+        if (sbtInfo.pagination.next_key) {
+            await new Promise(resolve => setTimeout(resolve, 100))
+            await getInfo(sbtInfo.pagination.next_key)
         }
     }
     await getInfo()
