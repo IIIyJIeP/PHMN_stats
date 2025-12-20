@@ -2,24 +2,10 @@
     "phmnDenomOsmosis": "ibc/D3B574938631B0A1BA704879020C696E514CFADAA7643CDE4BD5EB010BDE327B",
     "poolsPHMNosmosis": [
         {
-            "poolId": 1255,
-            "secondTokenDenom": "Atom",
-            "secondTokenBaseDenom": "ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2",
-            "secondTokenMultiplier": 1e6,
-            "ownerAddress": "osmo1hyjhy0tp6geral2g9vj9nyteglf8t5q4pqwre8"
-        },
-        {
-            "poolId": 1366,
-            "secondTokenDenom": "nBTC",
-            "secondTokenBaseDenom": "ibc/75345531D87BD90BF108BE7240BD721CB2CB0A1F16D4EBA71B09EC3C43E15C8F",
-            "secondTokenMultiplier": 1e14
-        },
-        {
-            "poolId": 1738,
-            "secondTokenDenom": "Osmo",
-            "secondTokenBaseDenom": "uosmo",
-            "secondTokenMultiplier": 1e6,
-            "ownerAddress": "osmo1hyjhy0tp6geral2g9vj9nyteglf8t5q4pqwre8"
+            "poolId": 3267,
+            "secondTokenDenom": "BTC",
+            "secondTokenBaseDenom": "factory/osmo1z6r6qdknhgsc0zeracktgpcxf43j6sekq07nw8sxduc9lg0qjjlqfu25e3/alloyed/allBTC",
+            "secondTokenMultiplier": 1e8
         },
         {
             "poolId": 1776,

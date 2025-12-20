@@ -2,10 +2,9 @@
     "contractsAddresses": {
         "PHMN_CONTRACT_ADDRESS": "juno1rws84uz7969aaa7pej303udhlkt3j9ca0l3egpcae98jwak9quzq8szn2l",
         "DAS_CONTRACT_ADDRESS": "juno1jktfdt5g2d0fguvy8r8pl4gly7wps8phkwy08z6upc4nazkumrwq7lj0vn",
-        "JUNO_SWAP_PHMN_POOL_ADDRESS": "juno1xkm8tmm7jlqdh8kua9y7wst8fwcxpdnk6gglndfckj6rsjg4xc5q8aaawn",
-        "WYND_PHMN_POOL_ADDRESS": "juno17jv00cm4f3twr548jzayu57g9txvd4zdh54mdg9qpjs7samlphjsykylsq",
         "DAS_TREASURY_ADDRESS": "juno1h5ex5dn62arjwvwkh88r475dap8qppmmec4sgxzmtdn5tnmke3lqwpplgg",
-        "ICS20_CONTRACT_ADDRESS": "juno1v4887y83d6g28puzvt8cl0f3cdhd3y6y9mpysnsp3k8krdm7l6jqgm0rkn"
+        "IBC_OSMO_CONTRACT_ADDRESS": "juno1v4887y83d6g28puzvt8cl0f3cdhd3y6y9mpysnsp3k8krdm7l6jqgm0rkn",
+        "IBC_NTRN_CONTRACT_ADDRESS": "juno1vw6l0gjwju73chh0nqc097347r7ucdx7vshm38qp25xr36wckhqsepcmsd"
     },
     "subdaoTreasuryAddresses" : [
         {

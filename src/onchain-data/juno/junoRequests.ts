@@ -1,48 +1,55 @@
-if (!process.env.LCD_ENDPOINT_JUNO) throw new Error('"LCD_ENDPOINT_JUNO" env var is required!')
-const junoLcdEndpoint = process.env.LCD_ENDPOINT_JUNO
+import { Tendermint34Client } from '@cosmjs/tendermint-rpc'
+import { QueryClient, createProtobufRpcClient } from '@cosmjs/stargate'
+import { fromBase64, toBase64, toHex } from '@cosmjs/encoding'
+import { QueryClientImpl } from 'cosmjs-types/cosmwasm/wasm/v1/query'
 
-type ContractState = {
-    key: string,
-    value: string
-}[]
+if (!process.env.RPC_ENDPOINT_JUNO) throw new Error('"RPC_ENDPOINT_JUNO" env var is required!')
+const junoRpcEndpoint = process.env.RPC_ENDPOINT_JUNO
 
-type ContractStateResponse = {
-    models: ContractState,
-    pagination: {
-        next_key: string | null
-    }
-}
+type ContractState = { key: string; value: string }[]
 
 export async function getContractState(contractAddress: string, pagination_key?: string) {
+  const tm = await Tendermint34Client.connect(junoRpcEndpoint)
+
+  try {
+    const qc = new QueryClient(tm)
+    const rpc = createProtobufRpcClient(qc)
+    const wasmQuery = new QueryClientImpl(rpc)
+
     const result: ContractState = []
 
-    const contractStatePath = `/cosmwasm/wasm/v1/contract/${contractAddress}/state`
-    const queryUrl = new URL(
-        contractStatePath,
-        junoLcdEndpoint
-    )
-    if (pagination_key) {
-        queryUrl.searchParams.append(
-            "pagination.key", pagination_key
-        )
-    }
-    
+    // If key is absent, use empty bytes (treated as "no key")
+    let nextKey: Uint8Array = pagination_key ? fromBase64(pagination_key) : new Uint8Array()
 
-    const response = await fetch(queryUrl)
-    if (!response.ok) {
-        throw new Error('Respons not OK')
-    }
-    const responseJson = await response.json() as ContractStateResponse
-    
-    for (let element of responseJson.models) {
-        result.push(element)
-    }
+    const LIMIT = 200n
 
-    if (responseJson.pagination.next_key !== null) {
-        for (let state of await getContractState(contractAddress, responseJson.pagination.next_key)) {
-            result.push(state)
+    while (true) {
+      const res = await wasmQuery.AllContractState({
+        address: contractAddress,
+        pagination: {
+          key: nextKey,
+          offset: 0n,        // must be present in your types (but ignored when key is used)
+          limit: LIMIT,
+          countTotal: false,
+          reverse: false
         }
+      })
+
+      for (const m of res.models) {
+        result.push({
+          key: toHex(m.key).toUpperCase(),
+          value: toBase64(m.value)
+        })
+      }
+
+      const nk = res.pagination?.nextKey
+      if (!nk || nk.length === 0) break
+
+      nextKey = nk
     }
 
     return result
+  } finally {
+    tm.disconnect()
+  }
 }
