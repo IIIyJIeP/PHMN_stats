@@ -195,11 +195,11 @@ export async function getPhmnStats() : Promise<PhmnStats>  {
     phmnStatsPoint.fields.push(
         {
             name: 'phmn_in_pool_usdc_ntrn',
-            value: neutronPoolsPhmnAmount
+            value: neutronPoolsPhmnAmount/1e6
         },
         {
             name: 'usdc_in_pool_usdc_ntrn',
-            value: neutronPoolsUsdcAmount
+            value: neutronPoolsUsdcAmount/1e6
         },
         {
             name: 'usdc_liquidity_ntrn',
