@@ -5,7 +5,7 @@ import { poolsPHMNosmosis, phmnDenomOsmosis, poolsWEIRDosmosis, weirdDenomOsmosi
 import { contractsAddresses, subdaoTreasuryAddresses } from './juno/phmnConfig.json'
 import { WritePoint } from "../db/ifluxdb"
 import { getPhmnPriceNeutron, getPhmnPriceOsmosis } from "./skip/phmnPriceSkip";
-import { getNeutronPoolPhmnAmount } from "./neutron/poolInfo";
+import { getNeutronPoolPhmnAmount, getNeutronPoolUsdcAmount } from "./neutron/poolInfo";
 
 const {
     PHMN_CONTRACT_ADDRESS,
@@ -189,8 +189,24 @@ export async function getPhmnStats() : Promise<PhmnStats>  {
 
     const phmn_price_avg = +((phmn_price_osmo + phmn_price_ntrn) / 2).toFixed(2)
     const neutronPoolsPhmnAmount = await getNeutronPoolPhmnAmount()
-    
+    const neutronPoolsUsdcAmount = await getNeutronPoolUsdcAmount()
+    const usdc_liquidity_ntrn = +((phmn_price_ntrn * neutronPoolsPhmnAmount + neutronPoolsUsdcAmount)/1e6).toFixed(2)
+
+
+
+
+
+
+
+
+
+
+
     phmnStatsPoint.fields.push(
+        {
+            name: 'usdc_liquidity_ntrn',
+            value: usdc_liquidity_ntrn
+        },
         {
             name: 'phmn_price_ntrn',
             value: phmn_price_ntrn
