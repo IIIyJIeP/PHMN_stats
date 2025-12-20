@@ -192,17 +192,15 @@ export async function getPhmnStats() : Promise<PhmnStats>  {
     const neutronPoolsUsdcAmount = await getNeutronPoolUsdcAmount()
     const usdc_liquidity_ntrn = +((phmn_price_ntrn * neutronPoolsPhmnAmount + neutronPoolsUsdcAmount)/1e6).toFixed(2)
 
-
-
-
-
-
-
-
-
-
-
     phmnStatsPoint.fields.push(
+        {
+            name: 'phmn_in_pool_usdc_ntrn',
+            value: neutronPoolsPhmnAmount
+        },
+        {
+            name: 'usdc_in_pool_usdc_ntrn',
+            value: neutronPoolsUsdcAmount
+        },
         {
             name: 'usdc_liquidity_ntrn',
             value: usdc_liquidity_ntrn
