@@ -122,6 +122,10 @@
         {
             "subdaoTag": "RespectBankSubDAO",
             "treasuryAddress": "juno1cgs9upt55g6ms3a9zwjn4gg2p6n339flzm7mjuuayu7m076lsuvsnf4cka"
+        },
+        {
+            "subdaoTag": "LiquiditySubDAO",
+            "treasuryAddress": "juno16rd66nkhuc2qvzarqs28z0l6gk50qy5w0jdwk2xygtkjz5kclu9qlsyxl4"
         }
     ]
 
