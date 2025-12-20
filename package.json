@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "@influxdata/influxdb-client": "^1.33.2",
-    "@pythnetwork/price-service-client": "^1.9.0",
     "dotenv": "^16.4.5",
     "googleapis": "^139.0.0",
     "juno-network": "^0.18.1",
