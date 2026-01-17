@@ -9,8 +9,8 @@ import { getAvatarCollectionStats, getSbtStats, getSpheresStats } from "./onchai
 import { TelegramBot } from "./telegram/telegram"
 
 export async function app() {
-    // updateDBs()
-    // TelegramBot.run()
+    updateDBs()
+    TelegramBot.run()
     
     await updateStats()
     async function updateStats() {
