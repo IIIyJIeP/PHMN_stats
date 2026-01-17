@@ -30,8 +30,7 @@ const getPhmnPriceMsg = (date: number) => {
     let msg = fmt``
     msg = fmt(msg, bold`💲PHMN price:  $${prices.phmnPrice?.toFixed(2) || 'n/a'}\n`)
     msg = fmt(msg, italic`updated ${prices.lastUpdateTime ? date - Math.floor(prices.lastUpdateTime?.valueOf()/1000) : 'n/a'} sec ago\n\n`)
-    msg = fmt(msg, `1 PHMN = ${prices.osmoPerPhmn?.toFixed(1) || 'n/a'} Osmo\n`)
-    msg = fmt(msg, `1 PHMN = ${prices.atomPerPhmn?.toFixed(2) || 'n/a'} Atom\n`)
+    msg = fmt(msg, `1 BTC = ${prices.phmnPerBtc?.toFixed(1) || 'n/a'} PHMN\n`)
     msg = fmt(msg, `1 PHMN = ${prices.weirdPerPhmn?.toFixed(0) || 'n/a'} Weird\n\n`)
     msg = fmt(msg, link('More stats here', 'https://phmn-stats.posthuman.digital'))
     
