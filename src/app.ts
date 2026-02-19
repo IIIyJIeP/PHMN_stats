@@ -54,7 +54,7 @@ export async function app() {
         }
     }
     
-    await updateNftStats()
+    // await updateNftStats()
     async function updateNftStats() {
         try {
             const sbtStats = await getSbtStats()
@@ -69,7 +69,7 @@ export async function app() {
         }
     }
 
-    await updateSpheresStats()
+    // await updateSpheresStats()
     async function updateSpheresStats() {
         try {
             const spheresStats = await getSpheresStats()
@@ -84,7 +84,7 @@ export async function app() {
         }
     }
 
-    await updateAvatarCllectionStats()
+    // await updateAvatarCllectionStats()
     async function updateAvatarCllectionStats() {
         try {
             const avatarStats = await getAvatarCollectionStats()
