@@ -4,10 +4,15 @@ export async function getPhmnPriceOsmosis() {
         "method": "GET"
     })
     if (!request.ok) {
-        throw new Error("getPhmnPriceNeutron failed")
+        throw new Error("getPhmnPriceOsmosis failed")
     }
     const price = await request.json()
+    if (Number(price.price_impact) < - 0.02 || Number(price.price_impact) > 0.02) {
+        throw new Error("getPhmnPriceOsmosis price_impact too high")
+    }
     return Math.floor(Number(price.amount_out) / 0.99 / 1e4) / 1e2
+
+
 }
 
 export async function getPhmnPriceNeutron() {
