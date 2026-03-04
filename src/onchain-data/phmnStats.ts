@@ -187,10 +187,10 @@ export async function getPhmnStats() : Promise<PhmnStats>  {
         )
     }
 
-    const phmn_price_avg = +((phmn_price_osmo + phmn_price_ntrn) / 2).toFixed(2)
+    const phmn_price_avg = phmn_price_ntrn ? +((phmn_price_osmo + phmn_price_ntrn) / 2).toFixed(2): phmn_price_osmo
     const neutronPoolsPhmnAmount = await getNeutronPoolPhmnAmount()
     const neutronPoolsUsdcAmount = await getNeutronPoolUsdcAmount()
-    const usdc_liquidity_ntrn = +((phmn_price_ntrn * neutronPoolsPhmnAmount + neutronPoolsUsdcAmount)/1e6).toFixed(2)
+    const usdc_liquidity_ntrn = phmn_price_ntrn ? +((phmn_price_ntrn * neutronPoolsPhmnAmount + neutronPoolsUsdcAmount)/1e6).toFixed(2) : null
 
     phmnStatsPoint.fields.push(
         {

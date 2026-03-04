@@ -21,7 +21,8 @@ export async function getPhmnPriceNeutron() {
         "method": "POST",
     })
     if (!request.ok) {
-        throw new Error("getPhmnPriceNeutron failed")
+        return null
+        // throw new Error("getPhmnPriceNeutron failed")
     }
     const price = await request.json()
     return Math.floor(Number(price.estimated_amount_out) / 0.99 / 1e4) / 1e2
