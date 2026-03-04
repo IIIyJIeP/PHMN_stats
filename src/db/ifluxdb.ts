@@ -31,7 +31,7 @@ export type WritePoint = {
     }[],
     fields: {
         name: string,
-        value: number | null
+        value: number
     }[]
 }
 
