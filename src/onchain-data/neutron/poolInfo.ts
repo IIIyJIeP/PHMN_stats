@@ -11,7 +11,7 @@ const queryMsg = `{
 }`;
 
 const phmnPriceQueryMsg = `{
-  "simulation": { "offer_asset": { "amount": "10000", "info": { "native_token": { "denom": ${phmnDenomNeutron} } } } } 
+  "simulation": { "offer_asset": { "amount": "10000", "info": { "native_token": { "denom": "${phmnDenomNeutron}" } } } } 
 }`;
 
 type PoolInfo = {
