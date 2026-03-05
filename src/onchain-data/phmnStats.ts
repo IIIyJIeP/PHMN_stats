@@ -4,7 +4,8 @@ import { requestPoolInfoOsmosis } from "./osmosis/osmosisRequests";
 import { poolsPHMNosmosis, phmnDenomOsmosis, poolsWEIRDosmosis, weirdDenomOsmosis } from './osmosis/phmnConfig.json'
 import { contractsAddresses, subdaoTreasuryAddresses } from './juno/phmnConfig.json'
 import { WritePoint } from "../db/ifluxdb"
-import { getPhmnPriceNeutron, getPhmnPriceOsmosis } from "./skip/phmnPriceSkip";
+import { getPhmnPriceOsmosis } from "./skip/phmnPriceSkip";
+import { getPhmnPriceNeutron } from "./neutron/poolInfo";
 import { getNeutronPoolPhmnAmount, getNeutronPoolUsdcAmount } from "./neutron/poolInfo";
 
 const {

@@ -10,6 +10,10 @@ const queryMsg = `{
   "pool": {}
 }`;
 
+const phmnPriceQueryMsg = `{
+  "simulation": { "offer_asset": { "amount": "10000", "info": { "native_token": { "denom": ${phmnDenomNeutron} } } } } 
+}`;
+
 type PoolInfo = {
     assets:
     {
@@ -21,6 +25,12 @@ type PoolInfo = {
         amount: string
     }[],
     total_share: string
+}
+
+type PriceInfo = {
+    return_amount: string,
+    spread_amount: string,
+    commission_amount: string
 }
 
 const getNeutronPoolInfo = async () => {
@@ -43,4 +53,19 @@ export const getNeutronPoolUsdcAmount = async () => {
     const phmnAmount = queryResult.assets.find(asset => asset.info.native_token.denom === usdcDenomNeutron)?.amount
     if (phmnAmount === undefined) throw new Error("getNeutronPoolUsdcAmount() failed")
     return Number(phmnAmount)
+}
+
+
+export async function getPhmnPriceNeutron() {
+    const client = await SigningCosmWasmClient.connect(rpcURL)
+    const queryResult: PriceInfo = await client.queryContractSmart(
+        contractAddress,
+        JSON.parse(phmnPriceQueryMsg)
+    )
+    const price = Math.round((Number(queryResult.commission_amount) + 
+        Number(queryResult.return_amount) + 
+        Number(queryResult.spread_amount)
+    )/100)/100
+    
+    return price
 }
