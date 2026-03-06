@@ -63,8 +63,7 @@ export async function getPhmnPriceNeutron() {
         JSON.parse(phmnPriceQueryMsg)
     )
     const price = Math.round((Number(queryResult.commission_amount) + 
-        Number(queryResult.return_amount) + 
-        Number(queryResult.spread_amount)
+        Number(queryResult.return_amount)
     )/100)/100
     
     return price
