@@ -7,7 +7,7 @@ export async function getPhmnPriceOsmosis() {
         throw new Error("getPhmnPriceOsmosis failed")
     }
     const price = await request.json()
-    if (Number(price.price_impact) < - 0.02 || Number(price.price_impact) > 0.02) {
+    if (Number(price.price_impact) < - 0.04 || Number(price.price_impact) > 0.04) {
         throw new Error("getPhmnPriceOsmosis price_impact too high")
     }
     return Math.floor(Number(price.amount_out) / 0.99 / 1e4) / 1e2
