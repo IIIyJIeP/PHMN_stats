@@ -1,5 +1,5 @@
 export async function getPhmnPriceOsmosis() {
-    const request = await fetch("https://sqsprod.osmosis.zone/router/quote?tokenIn=1000000ibc%2FD3B574938631B0A1BA704879020C696E514CFADAA7643CDE4BD5EB010BDE327B&tokenOutDenom=ibc%2F498A0751C798A0D9A389AA3691123DADA57DAA4FE165D5C75894505B876BA6E4", {
+    const request = await fetch("https://sqs.osmosis.zone/router/quote?tokenIn=1000000ibc%2FD3B574938631B0A1BA704879020C696E514CFADAA7643CDE4BD5EB010BDE327B&tokenOutDenom=ibc%2F498A0751C798A0D9A389AA3691123DADA57DAA4FE165D5C75894505B876BA6E4", {
         "body": null,
         "method": "GET"
     })
