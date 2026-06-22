@@ -609,8 +609,7 @@ async function getAllDenomOwners(rpc: string, denom: string): Promise<DenomOwner
     const cometClient = await connectComet(rpc);
 
     const stargate = await StargateClient.create(cometClient);
-    console.log("chainId:", await stargate.getChainId());
-
+    
     const queryClient = new QueryClient(cometClient);
     const bank = new QueryClientImpl(createProtobufRpcClient(queryClient));
 
