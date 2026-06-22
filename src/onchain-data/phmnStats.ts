@@ -3,10 +3,10 @@ import { connectComet } from "@cosmjs/tendermint-rpc";
 import { QueryClientImpl, type DenomOwner } from "cosmjs-types/cosmos/bank/v1beta1/query";
 import type { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 import { hexToText } from "../helpers";
-import { getContractState } from "./juno/junoRequests";
+import { getContractState } from "./cosmoshub/junoRequests";
 import { requestPoolInfoOsmosis } from "./osmosis/osmosisRequests";
 import { poolsPHMNosmosis, phmnDenomOsmosis, poolsWEIRDosmosis, weirdDenomOsmosis } from './osmosis/phmnConfig.json'
-import { contractsAddresses, subdaoTreasuryAddresses, denomPHMNcosmos } from './juno/phmnConfig.json'
+import { contractsAddresses, subdaoTreasuryAddresses, denomPHMNcosmos } from './cosmoshub/phmnConfig.json'
 import { WritePoint } from "../db/ifluxdb"
 import { getPhmnPriceOsmosis } from "./skip/phmnPriceSkip";
 import { getPhmnPriceNeutron } from "./neutron/poolInfo";

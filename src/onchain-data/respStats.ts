@@ -1,8 +1,8 @@
 import { hexToText } from "../helpers";
-import { getContractState } from "./juno/junoRequests";
-import { contractsAddresses } from './juno/respConfig.json'
+import { getContractState } from "./cosmoshub/junoRequests";
+import { contractsAddresses } from './cosmoshub/respConfig.json'
 import { WritePoint } from "../db/ifluxdb"
-import { subdaoTreasuryAddresses } from './juno/phmnConfig.json'
+import { subdaoTreasuryAddresses } from './cosmoshub/phmnConfig.json'
 
 const { RESP_CONTRACT_ADDRESS } = contractsAddresses
 

@@ -2,6 +2,7 @@ import { Markup, Telegraf } from 'telegraf'
 import { FmtString, bold, fmt, link, italic, code } from 'telegraf/format'
 import { getLastPhmnPrices } from '../db/lastUpdate'
 import { addMsg, deleteChatMsgs, getChatMsgs } from '../db/sqlite'
+import { denomPHMNcosmos } from '../onchain-data/cosmoshub/phmnConfig.json'
 
 export type NotificationMsg = {
     msg:FmtString,
@@ -38,11 +39,9 @@ const getPhmnPriceMsg = (date: number) => {
 }
 
 const getPhmnInfoMsg = () => {
-    const phmnContract = 'juno1rws84uz7969aaa7pej303udhlkt3j9ca0l3egpcae98jwak9quzq8szn2l'
-
     let msg = fmt``
-    msg = fmt(msg, bold`PHMN contract address: \n`)
-    msg = fmt(msg, code`${phmnContract}`)
+    msg = fmt(msg, bold`PHMN denom: \n`)
+    msg = fmt(msg, code`${denomPHMNcosmos}`)
 
     const links = Markup.inlineKeyboard([
         [
@@ -50,7 +49,7 @@ const getPhmnInfoMsg = () => {
             Markup.button.url("Claim PHMN drop", "https://claim.posthuman.digital/claim")
         ],
         [
-            Markup.button.url("DAS", "https://daodao.zone/dao/juno1h5ex5dn62arjwvwkh88r475dap8qppmmec4sgxzmtdn5tnmke3lqwpplgg/home"),
+            Markup.button.url("DAS", "https://daodao.zone/dao/cosmos1lj6knrgumqr5a9jxmkqeag476gmzgn24mv0w3548tyw6a5ryr7ms6xl599/home"),
             Markup.button.url("SubDAOs Chat", "https://t.me/+HzMN6JKxn941ZDMy"),
             Markup.button.url("Navigation", "https://t.me/allposthuman"),
         ]
