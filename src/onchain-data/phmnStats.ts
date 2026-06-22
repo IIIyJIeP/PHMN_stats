@@ -523,7 +523,7 @@ async function getDasContractInfo() {
         totalHolded: 0,
     }
 
-    const dasContarctStates = await getContractState(DAS_CONTRACT_ADDRESS)
+    const dasContarctStates = await getContractState(cosmosRpcEndpoint, DAS_CONTRACT_ADDRESS)
     for (let state of dasContarctStates) {
         if (state.key.substring(0, 16) === '0006636C61696D73') { // ??claims
             interface Claim {
@@ -631,7 +631,6 @@ async function getAllDenomOwners(rpc: string, denom: string): Promise<DenomOwner
 
         owners.push(...res.denomOwners);
         nextKey = res.pagination?.nextKey ?? new Uint8Array();
-        console.log(`собрано держателей: ${owners.length}`);
     } while (nextKey.length > 0);
 
     cometClient.disconnect();

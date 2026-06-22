@@ -3,13 +3,10 @@ import { QueryClient, createProtobufRpcClient } from '@cosmjs/stargate'
 import { fromBase64, toBase64, toHex } from '@cosmjs/encoding'
 import { QueryClientImpl } from 'cosmjs-types/cosmwasm/wasm/v1/query'
 
-if (!process.env.RPC_ENDPOINT_COSMOS) throw new Error('"RPC_ENDPOINT_COSMOS" env var is required!')
-const cosmosRpcEndpoint = process.env.RPC_ENDPOINT_COSMOS
-
 type ContractState = { key: string; value: string }[]
 
-export async function getContractState(contractAddress: string, pagination_key?: string) {
-  const tm = await Tendermint37Client.connect(cosmosRpcEndpoint)
+export async function getContractState(rpcEndpoint: string, contractAddress: string, pagination_key?: string) {
+  const tm = await Tendermint37Client.connect(rpcEndpoint)
 
   try {
     const qc = new QueryClient(tm)

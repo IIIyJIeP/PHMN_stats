@@ -6,6 +6,10 @@ import { subdaoTreasuryAddresses } from './juno/phmnConfig.json'
 
 const { RESP_CONTRACT_ADDRESS } = contractsAddresses
 
+if (!process.env.RPC_ENDPOINT_JUNO) throw new Error('"RPC_ENDPOINT_JUNO" env var is required!')
+const junoRpcEndpoint = process.env.RPC_ENDPOINT_JUNO
+
+
 type Balance = {
     address: string,
     amount: number
@@ -158,7 +162,7 @@ export async function getRespStats() {
 }
 
 async function getRespContractInfo() {
-    const respContarctStates = await getContractState(RESP_CONTRACT_ADDRESS)
+    const respContarctStates = await getContractState(junoRpcEndpoint, RESP_CONTRACT_ADDRESS)
     
     const respContractInfo = {
         respBalances: [] as Balance[],
