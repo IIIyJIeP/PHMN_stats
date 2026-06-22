@@ -1,131 +1,21 @@
 {
+    "denomPHMNcosmos": "factory/cosmos146s5j3t7gh2g37ywm47dp8avhesu2htvjjaxq7z55e7xj0rq0k8q5qnjjy/PHMN",
     "contractsAddresses": {
-        "PHMN_CONTRACT_ADDRESS": "juno1rws84uz7969aaa7pej303udhlkt3j9ca0l3egpcae98jwak9quzq8szn2l",
-        "DAS_CONTRACT_ADDRESS": "juno1jktfdt5g2d0fguvy8r8pl4gly7wps8phkwy08z6upc4nazkumrwq7lj0vn",
-        "DAS_TREASURY_ADDRESS": "juno1h5ex5dn62arjwvwkh88r475dap8qppmmec4sgxzmtdn5tnmke3lqwpplgg",
-        "IBC_OSMO_CONTRACT_ADDRESS": "juno1v4887y83d6g28puzvt8cl0f3cdhd3y6y9mpysnsp3k8krdm7l6jqgm0rkn",
-        "IBC_NTRN_CONTRACT_ADDRESS": "juno1vw6l0gjwju73chh0nqc097347r7ucdx7vshm38qp25xr36wckhqsepcmsd"
+        "DAS_CONTRACT_ADDRESS": "cosmos15nafa2hazwmjs8yz844h5ry5yrzvz6q96a0300ge26vm8hcsrd4s7zxhyj",
+        "DAS_TREASURY_ADDRESS": "cosmos1lj6knrgumqr5a9jxmkqeag476gmzgn24mv0w3548tyw6a5ryr7ms6xl599"
     },
     "subdaoTreasuryAddresses" : [
         {
-            "subdaoTag": "CoreTeamSubDAO",
-            "treasuryAddress": "juno1mptmak8ecmzwghtd4mep82jdkmdt0n6d8ggcd5hjmrfxasjc0epstkvwha"
+            "subdaoTag": "DAS",
+            "treasuryAddress": "cosmos1lj6knrgumqr5a9jxmkqeag476gmzgn24mv0w3548tyw6a5ryr7ms6xl599"
         },
         {
             "subdaoTag": "StrategicSubDao",
-            "treasuryAddress": "juno1ejdt5w55ad8c3syj8mph3xhchee2jtlcfpw9sm0mq2fh80qygudsjzrwjj"
-        },
-        {
-            "subdaoTag": "ReputationSubDAO",
-            "treasuryAddress": "juno1uwmtcc8lxc7waqy9takvnsautlfx5qp688jykvvuk4fezd8jf6fs549ym2"
-        },
-        {
-            "subdaoTag": "InvestmentsSubDAO",
-            "treasuryAddress": "juno198r8220mah5jn5fnxcgjds4j4pf48wyz0e40m0zdtw2385m08zmqqwhumq"
-        },
-        {
-            "subdaoTag": "WyndLiquiditySubDAO",
-            "treasuryAddress": "juno1gsrhz6vqgjyz9ar3tr7w4hzk5n6dtwt66hjtjyn0hqycje3pzpaq73395c"
-        },
-        {
-            "subdaoTag": "ContentSubDAO",
-            "treasuryAddress": "juno1ujl7hlglktdll3g8d3sttw83vw969ncwl3npzfaj7qplgzhhu92qdfdte4"
-        },
-        {
-            "subdaoTag": "TechSubDAO",
-            "treasuryAddress": "juno1l2t0k2jnpkkcp7rg8sxlnwasqsdmwpvre8dwjs6w2s2uzaj2qgkq4akcus"
-        },
-        {
-            "subdaoTag": "ZealySubDAO",
-            "treasuryAddress": "juno1gs3hkuvjaexu52u9s65e8wj5he753dl4l9yn6vew7hszvxhdg6sqanluwc"
-        },
-        {
-            "subdaoTag": "RuCommunity",
-            "treasuryAddress": "juno15tv8ufpg8t7mke4rs66cqcg0x297y55numn2x6a8kz703reldalqg9w40e"
-        },
-        {
-            "subdaoTag": "AdminRuCommunity",
-            "treasuryAddress": "juno1332n0ydjufkl0agp5mp5tcpyprdlh6yd2wmzyddhssu8j3sx6alse4yqwk"
-        },
-        {
-            "subdaoTag": "EngCommunity",
-            "treasuryAddress": "juno1q0yn0r4q8h7d3qmtlq7mrxuyn6wc4g99p94hr4d47ftu09wtfkmqwlscpl"
-        },
-        {
-            "subdaoTag": "AdminEngCommunity",
-            "treasuryAddress": "juno13k62fjqupyyhlxjt7adrfenzfpu2698d8emwvgkkjlxmj506gvfsf9hfe9"
-        },
-        {
-            "subdaoTag": "EducationSubDAO",
-            "treasuryAddress": "juno1kfsf0p07a9unhnn3f0qv2vkcwyr8vuzxvjempy739e6ry5acgfeqdkfyuv"
-        },
-        {
-            "subdaoTag": "NftSubDAO",
-            "treasuryAddress": "juno10cf0pmy6crjdgyd6y5svzwuf59qfu3kqva63cghp82x8ccw3ytesgtpf4m"
-        },
-        {
-            "subdaoTag": "PosthumanNftSubDAO",
-            "treasuryAddress": "juno1vknye0x0uxd0ypmr28qreg36fvuyyyna0ve8a7lrx2lepl4ehscsapfyvf"
-        },
-        {
-            "subdaoTag": "ExpeditionNftSubDAO",
-            "treasuryAddress": "juno1xnejf270qt5gn7nr379k6cjw9p0x8putxr7wf7g7pv5azdudlc7q3kpv6k"
-        },
-        {
-            "subdaoTag": "WeirdFriendsNft",
-            "treasuryAddress": "juno1htezk0nukqah65d9qn9xg7cvk0pd4207farr0lldjjt5f2qhk9hqnlp7nx"
-        },
-        {
-            "subdaoTag": "SinGardenSubDAO",
-            "treasuryAddress": "juno1fr3unygwarqphtygggwhplpzx4d0q8uymmnua2vnz39cp94lxzgq0z5rzg"
-        },
-        {
-            "subdaoTag": "NftGangSubDAO",
-            "treasuryAddress": "juno1kttu5tdrj74xsv0zfn7sjreu34fsuysa42auv892zsavn9pnqmwsyq2hpg"
-        },
-        {
-            "subdaoTag": "DefiGeeksSubDAO",
-            "treasuryAddress": "juno1a9qj7402e2fkwqjtvnpa5pckv9zdpg34aucdzurvy627gsgxud7qz0undv"
-        },
-        {
-            "subdaoTag": "MerchSubDAO",
-            "treasuryAddress": "juno14hy6440dw02rpw2t0mh6a6ge8deepfapjfkqax89mwdne0pk0wmstcqzth"
-        },
-        {
-            "subdaoTag": "GameFiSubDAO",
-            "treasuryAddress": "juno1xt8lgs35qntfqts0r686c9t0whuw2g065er3qahzc7qq8wjnpntsq499ge"
-        },
-        {
-            "subdaoTag": "MetarchySubDAO",
-            "treasuryAddress": "juno1an06lq90x3fkghls7rqeh0p3300dq75ahrcgm5zf7s0u6wd4lx5szkj2j7"
-        },
-        {
-            "subdaoTag": "UaCommunity",
-            "treasuryAddress": "juno10p866hul4r7jzp894lcxzjg74zk4g484m8z4y82ha3z44ccqymkqdvaqvh"
-        },
-        {
-            "subdaoTag": "TestNetSubDAO",
-            "treasuryAddress": "juno1wd8g3ahsnre4e8sltexte04hehtkt76tvqhddc9wsfyj9am4xt0skyqqlc"
-        },
-        {
-            "subdaoTag": "InfoSubDAO",
-            "treasuryAddress": "juno1ud8avxjwk5m97s8s5pqd0qhg0lyxqxefjzupyhrqvpq2002svfpq8urfuq"
-        },
-        {
-            "subdaoTag": "AISubDAO",
-            "treasuryAddress": "juno1l00nplvtnucaud94fs9y5mmckmrpc5d96kpdm8kxwrpkzhlmhxjq07x3w3"
-        },
-        {
-            "subdaoTag": "IncentiveSubDAO",
-            "treasuryAddress": "juno19hxxc04rvmn4nj5tvd7h63fsmzaxj6gk3ss2wxtsgg97k54ylzysp0evep"
-        },
-        {
-            "subdaoTag": "RespectBankSubDAO",
-            "treasuryAddress": "juno1cgs9upt55g6ms3a9zwjn4gg2p6n339flzm7mjuuayu7m076lsuvsnf4cka"
+            "treasuryAddress": "cosmos146s5j3t7gh2g37ywm47dp8avhesu2htvjjaxq7z55e7xj0rq0k8q5qnjjy"
         },
         {
             "subdaoTag": "LiquiditySubDAO",
-            "treasuryAddress": "juno16rd66nkhuc2qvzarqs28z0l6gk50qy5w0jdwk2xygtkjz5kclu9qlsyxl4"
+            "treasuryAddress": "cosmos1pu90e2gm2kq9lvheqzrh0tl9dw5aqg6v5gr9jug2eqdel0vzuxkqvg72nn"
         }
     ]
 

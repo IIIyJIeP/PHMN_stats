@@ -13,7 +13,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@cosmjs/stargate": "^0.39.0",
+    "@cosmjs/tendermint-rpc": "^0.39.0",
     "@influxdata/influxdb-client": "^1.33.2",
+    "cosmjs-types": "^0.11.0",
     "dotenv": "^16.4.5",
     "googleapis": "^139.0.0",
     "juno-network": "^0.18.1",

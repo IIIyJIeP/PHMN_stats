@@ -38,14 +38,14 @@ export async function app() {
 
             console.log(new Date().toLocaleString('ru'), 'Stats updated')
 
-            try {
-                await clearGSheets()
-                await updateGSheets(phmnStats)
+            // try {
+            //     await clearGSheets()
+            //     await updateGSheets(phmnStats)
                 
-                console.log(new Date().toLocaleString('ru'), 'Google Sheets updated')
-            } catch (err) {
-                console.error(new Date().toLocaleString('ru'), err)
-            }
+            //     console.log(new Date().toLocaleString('ru'), 'Google Sheets updated')
+            // } catch (err) {
+            //     console.error(new Date().toLocaleString('ru'), err)
+            // }
             
             setTimeout(updateStats, 60*1000)
         } catch (err) {
