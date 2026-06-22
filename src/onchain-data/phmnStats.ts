@@ -93,7 +93,7 @@ export async function getPhmnStats(): Promise<PhmnStats> {
         },
         {
             name: 'max_voting_power_ratio',
-            value: dasContractInfo.maxVotingPower * 100 / dasContractInfo.totalHolded
+            value: dasContractInfo.totalHolded === 0 ? (dasContractInfo.maxVotingPower * 100 / dasContractInfo.totalHolded) : 0
         },
         {
             name: 'current_supply',
