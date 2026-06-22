@@ -77,7 +77,7 @@ export async function getPhmnStats(): Promise<PhmnStats> {
         ],
         fields: []
     }
-
+    
     phmnStatsPoint.fields.push(
         {
             name: 'total_staked',
@@ -91,10 +91,10 @@ export async function getPhmnStats(): Promise<PhmnStats> {
             name: 'max_voting_power',
             value: dasContractInfo.maxVotingPower / 1e6
         },
-        // {
-        //     name: 'max_voting_power_ratio',
-        //     value: dasContractInfo.totalHolded === 0 ? (dasContractInfo.maxVotingPower * 100 / dasContractInfo.totalHolded) : 0
-        // },
+        {
+            name: 'max_voting_power_ratio',
+            value: dasContractInfo.totalHolded !== 0 ? (dasContractInfo.maxVotingPower * 100 / dasContractInfo.totalHolded) : 0
+        },
         {
             name: 'current_supply',
             value: phmnTokenInfo.currentSupply / 1e6
