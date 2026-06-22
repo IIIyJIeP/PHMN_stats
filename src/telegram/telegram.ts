@@ -51,7 +51,7 @@ const getPhmnInfoMsg = () => {
         [
             Markup.button.url("DAS", "https://daodao.zone/dao/cosmos1lj6knrgumqr5a9jxmkqeag476gmzgn24mv0w3548tyw6a5ryr7ms6xl599/home"),
             Markup.button.url("SubDAOs Chat", "https://t.me/+HzMN6JKxn941ZDMy"),
-            Markup.button.url("Navigation", "https://t.me/allposthuman"),
+            Markup.button.url("Community", "https://t.me/posthumanchat_ru"),
         ]
     ])
 
