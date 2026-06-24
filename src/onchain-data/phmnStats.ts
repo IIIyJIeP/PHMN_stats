@@ -608,7 +608,7 @@ async function getPhmnTokenInfo() {
 async function getAllDenomOwners(rpc: string, denom: string): Promise<DenomOwner[]> {
     const cometClient = await connectComet(rpc);
 
-    const stargate = await StargateClient.create(cometClient);
+    const stargate = StargateClient.create(cometClient);
     
     const queryClient = new QueryClient(cometClient);
     const bank = new QueryClientImpl(createProtobufRpcClient(queryClient));
@@ -622,7 +622,7 @@ async function getAllDenomOwners(rpc: string, denom: string): Promise<DenomOwner
             pagination: {
                 key: nextKey,
                 offset: 0n,
-                limit: 200n,
+                limit: 10000n,
                 countTotal: false,
                 reverse: false,
             },
