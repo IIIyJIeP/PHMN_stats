@@ -1,5 +1,6 @@
 {
     "denomPHMNcosmos": "factory/cosmos146s5j3t7gh2g37ywm47dp8avhesu2htvjjaxq7z55e7xj0rq0k8q5qnjjy/PHMN",
+    "escrowIbcOsmosis": "cosmos1x54ltnyg88k0ejmk8ytwrhd3ltm84xehrnlslf",
     "contractsAddresses": {
         "DAS_CONTRACT_ADDRESS": "cosmos15nafa2hazwmjs8yz844h5ry5yrzvz6q96a0300ge26vm8hcsrd4s7zxhyj",
         "DAS_TREASURY_ADDRESS": "cosmos1lj6knrgumqr5a9jxmkqeag476gmzgn24mv0w3548tyw6a5ryr7ms6xl599"

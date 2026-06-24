@@ -6,7 +6,7 @@ import { hexToText } from "../helpers";
 import { getContractState } from "./cosmoshub/junoRequests";
 import { requestPoolInfoOsmosis } from "./osmosis/osmosisRequests";
 import { poolsPHMNosmosis, phmnDenomOsmosis, poolsWEIRDosmosis, weirdDenomOsmosis } from './osmosis/phmnConfig.json'
-import { contractsAddresses, subdaoTreasuryAddresses, denomPHMNcosmos } from './cosmoshub/phmnConfig.json'
+import { contractsAddresses, subdaoTreasuryAddresses, denomPHMNcosmos, escrowIbcOsmosis } from './cosmoshub/phmnConfig.json'
 import { WritePoint } from "../db/ifluxdb"
 import { getPhmnPriceOsmosis } from "./skip/phmnPriceSkip";
 import { getPhmnPriceNeutron } from "./neutron/poolInfo";
@@ -121,7 +121,7 @@ export async function getPhmnStats(): Promise<PhmnStats> {
         },
     )
 
-    // let osmosisPoolsPhmnAmount = 0
+    let osmosisPoolsPhmnAmount = 0
     // for (let pool of phmnPoolsInfoOsmosis) {
     //     const phmnAmount = Number(pool.poolInfo.pool_assets.find((asset) => asset.token.denom === phmnDenomOsmosis
     //     )?.token.amount || '0') / 1e6
@@ -194,40 +194,47 @@ export async function getPhmnStats(): Promise<PhmnStats> {
     // }
 
     // const phmn_price_avg = phmn_price_ntrn ? +((phmn_price_osmo + phmn_price_ntrn) / 2).toFixed(2): phmn_price_osmo
-    // const neutronPoolsPhmnAmount = await getNeutronPoolPhmnAmount()
-    // const neutronPoolsUsdcAmount = await getNeutronPoolUsdcAmount()
-    // const usdc_liquidity_ntrn = phmn_price_ntrn ? +((phmn_price_ntrn * neutronPoolsPhmnAmount + neutronPoolsUsdcAmount)/1e6).toFixed(2) : +((phmn_price_osmo * neutronPoolsPhmnAmount + neutronPoolsUsdcAmount)/1e6).toFixed(2)
-
-    // phmnStatsPoint.fields.push(
-    //     {
-    //         name: 'phmn_in_pool_usdc_ntrn',
-    //         value: neutronPoolsPhmnAmount/1e6
-    //     },
-    //     {
-    //         name: 'usdc_in_pool_usdc_ntrn',
-    //         value: neutronPoolsUsdcAmount/1e6
-    //     },
-    //     {
-    //         name: 'usdc_liquidity_ntrn',
-    //         value: usdc_liquidity_ntrn
-    //     },
-    //     {
-    //         name: 'phmn_price_ntrn',
-    //         value: phmn_price_ntrn || 0
-    //     },
-    //     {
-    //         name: 'phmn_price_avg',
-    //         value: phmn_price_avg
-    //     },
-    //     {
-    //         name: 'market_cap',
-    //         value: +(1.0 * phmnContractInfo.currentSupply * phmn_price_avg / 1e6).toFixed(2)
-    //     },
-    //     {
-    //         name: 'phmnInPools',
-    //         value: (osmosisPoolsPhmnAmount + neutronPoolsPhmnAmount) / 1e6
-    //     }
-    // )
+    phmnStatsPoint.fields.push(
+        {
+            name: 'phmn_in_pool_usdc_ntrn',
+            value: 0
+        },
+        {
+            name: 'usdc_in_pool_usdc_ntrn',
+            value: 0
+        },
+        {
+            name: 'usdc_liquidity_ntrn',
+            value: 0
+        },
+        // {
+        //     name: 'phmn_price_ntrn',
+        //     value: phmn_price_ntrn || 0
+        // },
+        // {
+        //     name: 'phmn_price_avg',
+        //     value: phmn_price_avg
+        // },
+        // {
+        //     name: 'market_cap',
+        //     value: +(1.0 * phmnContractInfo.currentSupply * phmn_price_avg / 1e6).toFixed(2)
+        // },
+        
+        
+        
+        
+        
+        
+        
+        // {
+        //     name: 'phmnInPools',
+        //     value: (osmosisPoolsPhmnAmount + neutronPoolsPhmnAmount) / 1e6
+        // },
+        {
+            name: 'phmnInPools',
+            value: 0
+        }
+    )
 
     // for (let pool of phmnPoolsInfoOsmosis) {
     //     if (pool.poolId === 3267) continue
@@ -284,19 +291,19 @@ export async function getPhmnStats(): Promise<PhmnStats> {
     //     )
     // }
 
-    // const freePhmnOnOsmosis = phmnContractInfo.ibcOsmo - osmosisPoolsPhmnAmount
+    const freePhmnOnOsmosis = phmnTokenInfo.ibcOsmo - osmosisPoolsPhmnAmount
     // const freePhmnOnNeutron = phmnContractInfo.ibcNtrn - neutronPoolsPhmnAmount
 
-    // phmnContractInfo.phmnBalances.push(
-    //     {
-    //         address: 'On the Osmosis network',
-    //         amount: freePhmnOnOsmosis
-    //     },
-    //     {
-    //         address: 'On the Neutron network',
-    //         amount: freePhmnOnNeutron
-    //     }
-    // )
+    phmnTokenInfo.phmnBalances.push(
+        {
+            address: 'On the Osmosis network',
+            amount: freePhmnOnOsmosis
+        },
+        // {
+        //     address: 'On the Neutron network',
+        //     amount: freePhmnOnNeutron
+        // }
+    )
     const phmnBalancesPoints: WritePoint[] = []
     for (let balance of phmnTokenInfo.phmnBalances) {
         phmnBalancesPoints.push({
@@ -437,56 +444,56 @@ export async function getPhmnStats(): Promise<PhmnStats> {
         }
     }
 
-    // phmnStatsPoint.fields.push(
-    //     {
-    //         name: 'total_liquidity_osmo_ibcx',
-    //         value: 0
-    //     },
-    //     {
-    //         name: 'total_liquidity',
-    //         value: 0
-    //     },
-    //     {
-    //         name: 'total_liquidity_osmo',
-    //         value: 0
-    //     },
-    //     {
-    //         name: 'total_liquidity_wynd',
-    //         value: 0
-    //     },
-    //     {
-    //         name: 'total_liquidity_osmo_osmo',
-    //         value: 0
-    //     },
-    //     {
-    //         name: 'total_liquidity_osmosis_pool_1366',
-    //         value: 0
-    //     },
-    //     {
-    //         name: 'phmn_in_pool_osmo_ibcx',
-    //         value: 0
-    //     },
-    //     {
-    //         name: 'phmn_in_pool',
-    //         value: 0
-    //     },
-    //     {
-    //         name: 'phmn_in_pool_osmo',
-    //         value: 0
-    //     },
-    //     {
-    //         name: 'phmn_in_pool_wynd',
-    //         value: 0
-    //     },
-    //     {
-    //         name: 'phmn_in_pool_osmo_osmo',
-    //         value: 0
-    //     },
-    //     {
-    //         name: 'phmn_in_osmosis_pool_1366',
-    //         value: 0
-    //     },
-    // )
+    phmnStatsPoint.fields.push(
+        {
+            name: 'total_liquidity_osmo_ibcx',
+            value: 0
+        },
+        {
+            name: 'total_liquidity',
+            value: 0
+        },
+        {
+            name: 'total_liquidity_osmo',
+            value: 0
+        },
+        {
+            name: 'total_liquidity_wynd',
+            value: 0
+        },
+        {
+            name: 'total_liquidity_osmo_osmo',
+            value: 0
+        },
+        {
+            name: 'total_liquidity_osmosis_pool_1366',
+            value: 0
+        },
+        {
+            name: 'phmn_in_pool_osmo_ibcx',
+            value: 0
+        },
+        {
+            name: 'phmn_in_pool',
+            value: 0
+        },
+        {
+            name: 'phmn_in_pool_osmo',
+            value: 0
+        },
+        {
+            name: 'phmn_in_pool_wynd',
+            value: 0
+        },
+        {
+            name: 'phmn_in_pool_osmo_osmo',
+            value: 0
+        },
+        {
+            name: 'phmn_in_osmosis_pool_1366',
+            value: 0
+        },
+    )
 
     return {
         phmnStatsPoint: phmnStatsPoint,
@@ -570,7 +577,7 @@ async function getPhmnTokenInfo() {
         currentSupply: 0,
         dasContractBalance: 0,
         dasTreasury: 0,
-        // ibcOsmo: 0,
+        ibcOsmo: 0,
         // ibcNtrn: 0,
     }
 
@@ -578,7 +585,9 @@ async function getPhmnTokenInfo() {
     for (let owner of owners) {
             const amount = Number(owner.balance.amount)
             if (amount > 0) {
-                if (owner.address === DAS_CONTRACT_ADDRESS) {
+                if (owner.address === escrowIbcOsmosis) {
+                    phmnTokenInfo.ibcOsmo = amount
+                } else if (owner.address === DAS_CONTRACT_ADDRESS) {
                     phmnTokenInfo.dasContractBalance = amount
                 } else if (owner.address === DAS_TREASURY_ADDRESS) {
                     phmnTokenInfo.dasTreasury = amount
