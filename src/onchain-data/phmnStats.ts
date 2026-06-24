@@ -139,28 +139,28 @@ export async function getPhmnStats(): Promise<PhmnStats> {
     //     if (pool.poolId === 3267) {
     //         const liquidity = +(phmn_price_osmo * phmnAmount*2).toFixed(2)
 
-    //         phmnStatsPoint.fields.push(
-    //             {
-    //                 name: 'phmn_price_osmo',
-    //                 value: phmn_price_osmo
-    //             },
-    //             {
-    //                 name: 'btc_liquidity_osmo',
-    //                 value: liquidity
-    //             },
-    //             {
-    //                 name: 'phmn_in_pool_btc_osmo',
-    //                 value: phmnAmount
-    //             },
-    //             {
-    //                 name: 'btc_in_pool_osmo',
-    //                 value: token2Amount
-    //             },
-    //             {
-    //                 name: 'phmn_per_btc_osmo',
-    //                 value: 1.0 / token2PerPhmn
-    //             },
-    //         )
+            phmnStatsPoint.fields.push(
+                // {
+                //     name: 'phmn_price_osmo',
+                //     value: phmn_price_osmo
+                // },
+                {
+                    name: 'btc_liquidity_osmo',
+                    value: 0
+                },
+                {
+                    name: 'phmn_in_pool_btc_osmo',
+                    value: 0
+                },
+                {
+                    name: 'btc_in_pool_osmo',
+                    value: 0
+                },
+                // {
+                //     name: 'phmn_per_btc_osmo',
+                //     value: 1.0 / token2PerPhmn
+                // },
+            )
     //     }
     // }
 
@@ -491,6 +491,22 @@ export async function getPhmnStats(): Promise<PhmnStats> {
         },
         {
             name: 'phmn_in_osmosis_pool_1366',
+            value: 0
+        },
+        {
+            name: 'total_liquidity_osmosis_pool_3267',
+            value: 0
+        },
+        {
+            name: 'phmn_in_osmosis_pool_3267',
+            value: 0
+        },
+        {
+            name: 'total_liquidity_osmosis_pool_1776',
+            value: 0
+        },
+        {
+            name: 'phmn_in_osmosis_pool_1776',
             value: 0
         },
     )
